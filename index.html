@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="ja">
 <head>
 <meta charset="UTF-8"/>
@@ -362,7 +362,7 @@ main{
   .cat-browse-grid{grid-template-columns:repeat(3,1fr)}
   .banner-left{max-width:min(48%,420px)}
 }
-@media(max-width:980px){
+@media(max-width:1100px),(max-height:820px){
   .mid-row{grid-template-columns:1fr 1fr}
   .quick-panel{grid-column:1/-1}
   html,body{overflow:auto;height:auto}
@@ -379,6 +379,10 @@ main{
   .announce-item{flex:0 0 auto;min-height:0;padding:10px 4px;justify-content:flex-start;overflow:visible}
   .announce-title{margin-top:4px}
   .announce-desc{margin-top:2px}
+  /* ショートカット: はみ出しで見切れないようにする */
+  .quick-grid{overflow:visible}
+  .quick-card{height:auto}
+  .shortcut-bar{min-height:0}
 }
 @media(max-width:860px){
   html,body{overflow:auto;height:auto}
