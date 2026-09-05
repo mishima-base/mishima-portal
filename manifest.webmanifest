@@ -1,0 +1,19 @@
+{
+  "name": "三島ポータル",
+  "short_name": "三島",
+  "description": "三島ポータル — 社内リンク・ニュース・やること",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f4f8ff",
+  "theme_color": "#2f86e8",
+  "lang": "ja",
+  "icons": [
+    {
+      "src": "./icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
