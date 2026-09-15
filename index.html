@@ -911,6 +911,14 @@ function addTodo(){
   if(!input) return;
   const text = (input.value||'').trim();
   if(!text){ input.focus(); return; }
+
+  // 「監査対策」と入力した場合は専用ページへ遷移（Todoには追加しない）
+  if(text === '監査対策'){
+    input.value = '';
+    window.location.href = 'https://kansacoach.suzukitaka.workers.dev/';
+    return;
+  }
+
   todos.unshift({text, done:false, id: Date.now()});
   input.value = '';
   saveTodos();
