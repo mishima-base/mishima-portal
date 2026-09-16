@@ -914,8 +914,8 @@ function addTodo(){
   const text = (input.value||'').trim();
   if(!text){ input.focus(); return; }
 
-  // 「監査対策」と入力した場合は専用ページへ遷移（Todoには追加しない）
-  if(text === '監査対策'){
+  // 「監査勉強」と入力した場合は専用ページへ遷移（Todoには追加しない）
+  if(text === '監査勉強'){
     input.value = '';
     window.location.href = 'https://kansa-site.suzukitaka.workers.dev/';
     return;
