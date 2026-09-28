@@ -219,16 +219,17 @@ main{padding:14px 18px 28px;display:flex;flex-direction:column;gap:14px}
 .dummy-badge{font-size:11px;font-weight:700;background:var(--orange-soft);color:var(--orange);padding:3px 9px;border-radius:6px}
 .goal-grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px;padding:2px 14px 10px}
 .goal{border:1px solid var(--line);border-radius:var(--radius-m);padding:8px 11px;display:flex;flex-direction:column;gap:5px;background:var(--surface);min-width:0}
-.goal-top{display:flex;gap:10px;align-items:center}
-.goal-ico{width:32px;height:32px;border-radius:50%;display:grid;place-items:center;font-size:15px;flex-shrink:0;color:#fff}
-.goal-name{font-weight:900;font-size:13px;line-height:1.3;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.goal-sub{font-size:10.5px;color:var(--ink-3);white-space:nowrap}
+.goal-top{display:flex;gap:8px;align-items:center}
+.goal-ico{width:28px;height:28px;border-radius:50%;display:grid;place-items:center;font-size:15px;flex-shrink:0;color:#fff}
+.goal-name{font-weight:900;font-size:13px;line-height:1.3;white-space:nowrap;min-width:0;flex:1;overflow:hidden;text-overflow:ellipsis}
+.goal-sub{font-size:10.5px;color:var(--ink-3);white-space:nowrap;margin-top:1px}
 .goal-top > div:nth-child(2){min-width:0;flex:1}
 .goal-stat{display:flex;justify-content:flex-start;gap:6px;align-items:baseline;font-size:11.5px;color:var(--ink-2);white-space:nowrap;gap:6px;overflow:hidden}
 .goal-stat b{font-family:var(--num);font-size:14px;color:var(--ink)}
-.goal-period{display:inline-block;font-size:10px;font-weight:700;padding:0 5px;border-radius:4px;margin-right:4px;line-height:1.5}
-.goal-big{margin-left:auto;flex-shrink:0;font-family:var(--num);font-size:20px;font-weight:800;line-height:1;white-space:nowrap}
-.goal-big small{font-family:'Noto Sans JP',sans-serif;font-size:10px;font-weight:700;margin-left:2px;color:var(--ink-3)}
+.goal-period{flex-shrink:0;font-size:10px;font-weight:700;padding:1px 6px;border-radius:4px;line-height:1.5}
+.goal-big{flex-shrink:0;font-family:var(--num);font-size:16px;font-weight:800;line-height:1;white-space:nowrap}
+.goal-big small{font-family:'Noto Sans JP',sans-serif;font-size:10px;font-weight:700;margin-left:1px;opacity:.75}
+.goal-msg{min-width:0;overflow:hidden;text-overflow:ellipsis}
 .gi-list{display:flex;flex-direction:column;gap:3px}
 .gi{display:grid;grid-template-columns:minmax(0,auto) minmax(28px,1fr) auto;align-items:center;gap:6px;font-size:11px;color:var(--ink-2)}
 .gi-label{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:9.5em}
@@ -238,7 +239,7 @@ main{padding:14px 18px 28px;display:flex;flex-direction:column;gap:14px}
 .gi-val b{font-family:var(--num);font-size:13px;color:var(--ink)}
 .gi-val small{font-size:10.5px;color:var(--ink-3);margin-left:1px}
 .goal-done{border-color:var(--gc);box-shadow:inset 0 0 0 1px var(--gc)}
-.goal-next{margin-top:auto;font-size:11px;border-radius:6px;padding:3px 8px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.goal-next{margin-top:auto;font-size:10.5px;letter-spacing:-.01em;border-radius:6px;padding:4px 8px;font-weight:700;white-space:nowrap;display:flex;align-items:baseline;gap:8px;min-width:0}
 
 /* ── ニュース ── */
 .tabs{flex:1}
@@ -1021,7 +1022,7 @@ function calcGoal(g){
   const done = got >= total;
   const unit = g.items[0].unit;
   return { done, pct, big:`${pct}%`, small:'達成率',
-    next: done ? '目標達成！おつかれさまです' : `目標まであと${g.items.length > 1 ? '合計' : ''}${total - got}${unit}` };
+    next: done ? '目標達成！' : `あと${g.items.length > 1 ? '合計' : ''}${total - got}${unit}` };
 }
 function renderGoals(){
   const d = new Date();
@@ -1032,7 +1033,7 @@ function renderGoals(){
     const rows = g.items.map(it => {
       const blank = isBlank(it.value);
       const p = blank ? 0 : g.lowerIsBetter ? r.pct : Math.min(100, Math.round(it.value / it.target * 100));
-      const tgt = g.lowerIsBetter ? `<small> / 目標${it.target}${esc(it.unit)}以下</small>` : `<small>/${it.target}${esc(it.unit)}</small>`;
+      const tgt = g.lowerIsBetter ? `<small>/目標${it.target}${esc(it.unit)}</small>` : `<small>/${it.target}${esc(it.unit)}</small>`;
       const val = blank ? '—' : g.lowerIsBetter ? `${it.value}${esc(it.unit)}` : it.value;
       return `<div class="gi" title="${esc(it.label)}：${blank ? '未入力' : it.value + esc(it.unit)}（目標 ${it.target}${esc(it.unit)}${g.lowerIsBetter ? '以下' : ''}）">
         <span class="gi-label">${esc(it.label)}</span>
@@ -1041,10 +1042,10 @@ function renderGoals(){
     }).join('');
     return `<div class="goal${r.done ? ' goal-done' : ''}" style="--gc:${g.color}">
       <div class="goal-top"><div class="goal-ico" style="background:${g.color}">${g.icon}</div>
-        <div><div class="goal-name" style="color:${g.color}">${esc(g.name)}</div><div class="goal-sub"><span class="goal-period" style="color:${g.color};background:${g.soft}">${esc(g.period || '今月')}</span>${esc(g.sub)}</div></div>
-        <div class="goal-big" style="color:${g.color}" title="${esc(r.small)}">${esc(r.big)}<small>${g.lowerIsBetter || r.pending ? '' : '達成'}</small></div></div>
+        <div class="goal-name" style="color:${g.color}" title="${esc(g.name)}（${esc(g.sub)}）">${esc(g.name)}</div>
+        <span class="goal-period" style="color:${g.color};background:${g.soft}">${esc(g.period || '今月')}</span></div>
       <div class="gi-list">${rows}</div>
-      <div class="goal-next" style="background:${g.soft};color:${g.color}" title="${esc(r.next)}">${r.done ? '🎉 ' : ''}${esc(r.next)}</div>
+      <div class="goal-next" style="background:${g.soft};color:${g.color}" title="${esc(r.next)}">${(g.lowerIsBetter || r.pending) ? '' : `<span class="goal-big">${esc(r.big)}<small>達成</small></span>`}<span class="goal-msg">${r.done ? '🎉 ' : ''}${esc(r.next)}</span></div>
     </div>`;
   }).join('');
 }
