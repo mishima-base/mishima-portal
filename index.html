@@ -43,7 +43,7 @@
   --num:'Outfit','Noto Sans JP',system-ui,sans-serif;
 }
 *{box-sizing:border-box;margin:0;padding:0}
-html,body{height:100%}
+html,body{height:100%;overflow-x:clip}
 body{
   font-family:'Noto Sans JP','Hiragino Sans','Yu Gothic UI',Meiryo,system-ui,sans-serif;
   background:var(--bg);color:var(--ink);font-size:14px;line-height:1.55;
@@ -169,7 +169,7 @@ main{padding:14px 18px 28px;display:flex;flex-direction:column;gap:14px}
 .banner-dots{position:absolute;bottom:12px;left:50%;transform:translateX(-50%);display:flex;gap:7px}
 .banner-dots button{width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,.45)}
 .banner-dots button.on{background:#fff;width:22px;border-radius:5px}
-.banner-src{position:absolute;right:12px;bottom:9px;font-size:10px;background:rgba(12,44,104,.55);padding:2px 8px;border-radius:999px}
+.banner-src{position:absolute;left:12px;bottom:9px;font-size:10px;background:rgba(12,44,104,.55);padding:2px 8px;border-radius:999px}
 
 /* ── お知らせ ── */
 .announce .p-head{background:linear-gradient(90deg,#ff8095,#ff9eae);border-radius:var(--radius-l) var(--radius-l) 0 0;color:#fff;padding:10px 16px}
@@ -418,7 +418,7 @@ main{padding:14px 18px 28px;display:flex;flex-direction:column;gap:14px}
 @media (max-width:1180px){
   .goal-grid{grid-template-columns:repeat(3,minmax(0,1fr))}
   .row-tools{grid-template-columns:repeat(2,minmax(0,1fr))}
-  .row-top{grid-template-columns:1fr 1fr}
+  .row-top{grid-template-columns:repeat(2,minmax(0,1fr))}
   .banner{grid-column:1/-1}
   .news-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
 }
@@ -434,19 +434,30 @@ main{padding:14px 18px 28px;display:flex;flex-direction:column;gap:14px}
   .st-date{font-size:16px}
   .st-date small{font-size:12px}
   main{padding:14px 14px 32px;gap:14px}
-  .row-top,.row-tools{grid-template-columns:1fr}
+  .row-top,.row-tools{grid-template-columns:minmax(0,1fr)}
   .goal-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
   .banner-inner{max-width:100%;padding:20px 20px 40px}
   .banner-shade{background:linear-gradient(90deg,rgba(12,44,104,.9) 0%,rgba(14,56,128,.7) 60%,rgba(20,70,150,.35) 100%)}
   .banner-nav{display:none}
+  .banner-dots{left:auto;right:14px;transform:none}
   .goals .p-head{flex-wrap:wrap}
   .goal-month{margin-left:0;width:100%}
   .news .p-head{flex-wrap:wrap}
   .tabs{margin-left:0;width:100%;flex:none;overflow-x:auto;flex-wrap:nowrap;padding-bottom:4px}
   .tab{white-space:nowrap}
 }
+@media (max-width:860px){
+  /* iPhoneで入力欄をタップしたときに画面が拡大され、左右にずれるのを防ぐ（16px未満だと自動拡大される） */
+  .search input,.todo-form input[type=text],.todo-form input[type=time],.field input{font-size:16px}
+  .topbar{gap:8px}
+  .status{min-width:0;gap:8px;padding:6px 10px}
+  .weather{font-size:15px}
+  .weather span:first-child{font-size:18px}
+  .clock{font-size:17px}
+}
 @media (max-width:560px){
-  .goal-grid,.news-grid{grid-template-columns:1fr}
+  .st-year{display:none}
+  .goal-grid,.news-grid{grid-template-columns:minmax(0,1fr)}
 }
 </style>
 </head>
@@ -738,8 +749,8 @@ const GOALS = [
     ]},
   { name:'各種セミナー', sub:'前もって・必要論入門', icon:'🎤', color:'#16a36b', soft:'#e3f6ee', period:'今月',
     items:[
-      { label:'前もってセミナー',   value:3, target:10, unit:'件' },
-      { label:'必要論入門セミナー', value:1, target:10, unit:'件' },
+      { label:'前もってセミナー',   value:null, target:10, unit:'件' },
+      { label:'必要論入門セミナー', value:null, target:10, unit:'件' },
     ]},
   { name:'AO校生', sub:'当月入校数（世帯）', icon:'🎓', color:'#e8455f', soft:'#fde8ec', period:'今月',
     items:[
@@ -946,7 +957,7 @@ let currentDay = ymd(new Date());
 function tick(){
   const d = new Date();
   $('clock').textContent = `${pad(d.getHours())}:${pad(d.getMinutes())}`;
-  $('st-date').innerHTML = `${d.getFullYear()}.${pad(d.getMonth()+1)}.${pad(d.getDate())}<small>（${WEEK[d.getDay()]}）</small>`;
+  $('st-date').innerHTML = `<span class="st-year">${d.getFullYear()}.</span>${pad(d.getMonth()+1)}.${pad(d.getDate())}<small>（${WEEK[d.getDay()]}）</small>`;
   if(ymd(d) !== currentDay){ currentDay = ymd(d); renderRoutine(); }
 }
 const WMO = {0:'☀️',1:'🌤️',2:'⛅',3:'☁️',45:'🌫️',48:'🌫️',51:'🌦️',53:'🌦️',55:'🌧️',61:'🌧️',63:'🌧️',65:'🌧️',71:'🌨️',73:'🌨️',75:'🌨️',80:'🌦️',81:'🌧️',82:'🌧️',95:'⛈️',96:'⛈️',99:'⛈️'};
