@@ -14,7 +14,8 @@
 <link rel="icon" href="./icon-192.png" sizes="192x192" type="image/png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@900&family=Noto+Sans+JP:wght@400;500;700;800;900&family=Outfit:wght@600;700;800&display=swap" rel="stylesheet">
+<link rel="preload" as="image" href="img/login-bg.webp">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700;900&family=Outfit:wght@600;800&display=swap" media="print" onload="this.media='all'">
 <script>
 /* PCでは、MacBook 11インチ（表示領域 1366×670）を基準に、画面全体を同じ比率で拡大・縮小します（文字や絵はその大きさで描き直すので、ぼやけません） */
 (function(){var d=document.documentElement;function fit(){var w=innerWidth,h=innerHeight;
@@ -147,16 +148,16 @@ svg{display:block}
 .ticker{flex:1;min-width:0;max-width:440px;height:34px;overflow:hidden;position:relative;border-radius:9px;
   background:linear-gradient(180deg,#0b2457,#123a82);box-shadow:inset 0 0 0 1.5px rgba(124,196,255,.5),0 0 10px rgba(60,160,255,.35)}
 .ticker[hidden]{display:none}
-.ticker-track{position:absolute;left:0;top:0;height:100%;display:flex;align-items:center;white-space:nowrap;will-change:transform;
+.ticker-track{position:absolute;left:0;top:0;height:100%;display:flex;align-items:center;white-space:nowrap;will-change:transform;padding-left:100%;animation-duration:20s;
   color:#e8f4ff;font-weight:700;font-size:13px;text-shadow:0 0 6px rgba(124,196,255,.9);animation:tick linear infinite}
 .ticker:hover .ticker-track{animation-play-state:paused}
-.ticker.fixed .ticker-track{animation:none;transform:none;left:0;right:0;justify-content:center}
+.ticker.fixed .ticker-track{animation:none;transform:none;left:0;right:0;padding-left:0;justify-content:center}
 .ticker.fixed .ticker-track span{padding-right:0;max-width:100%;overflow:hidden;text-overflow:ellipsis}
 .ticker.fixed .ticker-track.in{animation:tick-in .5s ease-out}
 @keyframes tick-in{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
 .ticker-track span{padding-right:56px}
 .ticker-track span::before{content:"📢";margin-right:8px}
-@keyframes tick{from{transform:translateX(var(--from))}to{transform:translateX(var(--to))}}
+@keyframes tick{from{transform:translateX(0)}to{transform:translateX(-100%)}}
 
 /* ── メイン ── */
 main{flex:1;min-height:0;padding:14px 20px 16px;display:flex;flex-direction:column;gap:14px}
@@ -659,8 +660,8 @@ const QUICK_MENU = [
   { name:'ジョブカン', icon:'cloud', color:'#2f7fd6', url:'https://id.jobcan.jp/users/sign_in' },
   { name:'Gemini', icon:'sparkle', color:'#6d28d9', url:'https://gemini.google.com/' },
   { name:'NotebookLM', icon:'book', color:'#1a73e8', url:'https://notebooklm.google.com/' },
-  {},   // 空き枠（整備中）
-  {},   // 空き枠（整備中）
+  { name:'Google Workspaceサポート', icon:'help', color:'#1a73e8', url:'https://sites.google.com/pcdepot.jp/gw-support?usp=sharing' },
+  { name:'Slack', icon:'chat', color:'#611f69', url:'https://slack.com/signin#/signin' },
 ];
 
 /* ── ② 毎日のルーティン（「毎日のタスク」に毎日表示） ─────────
@@ -697,24 +698,21 @@ const CATEGORIES = [
       {name:'SL三島BASE', url:'https://drive.google.com/drive/folders/1P6zOzKkE16aCZRNPgrtzOGFzkl1lH51c?usp=drive_link', dom:'drive.google.com'},
       {name:'SMARTLIFEAO静岡三島校', url:'https://drive.google.com/drive/folders/1fCqNqHGsdcKfYm-jDOE4drGctQutqGDY?usp=drive_link', dom:'drive.google.com'},
       {name:'静岡ポータル', url:'https://shizuoka-portal.slmc-shizuoka.workers.dev', dom:'workers.dev'},
-      {name:'追加枠', url:'#', dom:'整備中'},
     ]},
   { id:'21', name:'マニュアル', icon:'📖', links:[
       {name:'三島BASEオリジナル', url:'https://drive.google.com/drive/folders/1jEdet5yBGZJ74MXZJ02vSd5V9e4vVrmW?usp=share_link', dom:'drive.google.com'},
-      {name:'追加枠', url:'#', dom:'整備中'},
-      {name:'追加枠', url:'#', dom:'整備中'},
     ]},
   { id:'02', name:'リスト', icon:'📋', links:[
       {name:'FAS機会損失相談', url:'https://docs.google.com/spreadsheets/d/1yepzlfQn24PBVvRDQyIrRE5RN9fRhKZc/edit?usp=share_link&ouid=107304723902385025080&rtpof=true&sd=true', dom:'docs.google.com'},
       {name:'BOXリスト', url:'https://drive.google.com/drive/folders/1aAB-fKmbWscipz1u0aF8l3qpv928rPW4?usp=drive_link', dom:'google drive'},
       {name:'セミナー参加者リスト', url:'https://docs.google.com/spreadsheets/d/1gFl9xnZxMSNVyn_9mwBWID3vCwYxCVCD-BFrcST3MWA/edit?usp=drive_link', dom:'drive'},
-      {name:'リファラルリスト', url:'#', dom:'整備中'},   // ← URLを入れてください
+      {name:'リファラルリスト', url:'https://docs.google.com/spreadsheets/d/1E6xetCHG_9H4DxVEdijlTh4IGAtbB2oH/edit?usp=sharing&ouid=107304723902385025080&rtpof=true&sd=true', dom:'docs.google.com'},
     ]},
   { id:'15', name:'メンバーシップ', icon:'💳', links:[
       {name:'プレミアムメンバーサービス', url:'https://drive.google.com/drive/folders/1WGn6hGdp-wB5n9RT7lHhidhaQdY61azb?usp=share_link', dom:'drive.google.com'},
       {name:'カルテ管理', url:'https://script.google.com/a/macros/pcdepot.jp/s/AKfycbyvE6XfbeP4I79U0M8Men3mdhu0ZGzW-7l_JNd1_2FPG0-XvpvWeIUNRVGCU40z1iBKVQ/exec', dom:'google'},
       {name:'会員Benefit比較表', url:'https://benefitcomparison.mishima.workers.dev', dom:'mishimaBenefit'},
-      {name:'媒体', url:'#', dom:'整備中'},   // ← URLを入れてください
+      {name:'媒体', url:'https://contents.smartlifemc.jp/login', dom:'smartlifemc.jp'},
     ]},
   { id:'23', name:'プランナー', icon:'🗓️', links:[
       {name:'日次報告', url:'https://sites.google.com/pcdepot.jp/daily2611', dom:'sites.google.com'},
@@ -725,18 +723,18 @@ const CATEGORIES = [
       {name:'くらしのデジタル知識トレーニング', url:'https://productstudy.mishima.workers.dev', dom:'mishima academy'},
       {name:'LTV計算ツール', url:'https://ltvcalculation.mishima.workers.dev', dom:'ltvcalculation'},
       {name:'プロダクトテスト', url:'https://academyportal.suzukitaka.workers.dev/', dom:'mishima academy'},
-      {name:'追加枠', url:'#', dom:'整備中'},
-      {name:'追加枠', url:'#', dom:'整備中'},
+      {name:'Google Workspaceサポート', url:'https://sites.google.com/pcdepot.jp/gw-support?usp=sharing', dom:'sites.google.com'},
+      {name:'資格受講ポータル', url:'https://exam-platform.digitallifeplanner.workers.dev/', dom:'workers.dev'},
+      {name:'Slack（ブランチ）', url:'https://branch-wau2749.slack.com/?redir=%2Fgantry%2Fclient', dom:'slack.com'},
     ]},
   // ── 店舗・事業 ──
   { id:'03', name:'AO静岡三島校', icon:'🎓', group:'店舗・事業', links:[
       {name:'AO生リスト', url:'https://docs.google.com/spreadsheets/d/1WHBsuTcEKVcu0amIaO4B1cDwZ-8w_IEX/edit?usp=sharing', dom:'docs.google.com'},
-      {name:'学びの図書館 書籍リスト', url:'#', dom:'整備中'},
       {name:'ラジオ', url:'https://drive.google.com/drive/folders/17HQOBaFIxshTaYEitoWMIOhsoczdqkH0?usp=share_link', dom:'drive.google.com'},
       {name:'大学選手権サイト', url:'https://unv.smartlife.co.jp/kagayake2026/index.html', dom:'kagayake2026'},
     ]},
   { id:'14', name:'SLS/SLD', icon:'🏫', links:[
-      {name:'社長作成HP', url:'#', dom:'整備中'},
+      {name:'社長作成HP', url:'https://csaephex.gensparkspace.com', dom:'gensparkspace.com'},
       {name:'セミナー参加者リスト', url:'https://docs.google.com/spreadsheets/d/1gFl9xnZxMSNVyn_9mwBWID3vCwYxCVCD-BFrcST3MWA/edit?usp=drive_link', dom:'drive'},
       {name:'スマートライフ研究所', url:'https://edu-smartlife.or.jp/', dom:'smartlife.jp'},
     ]},
@@ -767,13 +765,13 @@ const CATEGORIES = [
       {name:'Teachme Biz', url:'https://teachme.jp/180229/f/roomR6D2IaK7?page=1&sortKey=title&sortOrder=asc', dom:'teachme.jp'},
       {name:'pcdepot2.0ダイジェスト', url:'https://api01-platform.stream.co.jp/apiservice/plt3/NTczNA%3d%3d%23ODY1%23280%23168%230%2335E6A0D8A400%23MDoyOjc6YTpmOzEwOzEwOzEw%23', dom:'会員様動画'},
       {name:'pcdepot2.0通し映像', url:'https://api01-platform.stream.co.jp/apiservice/plt3/NTczNA%3d%3d%23ODY0%23280%23168%230%2335E6A0D8A400%23MDoyOjc6YTpmOzEwOzEwOzEw%23', dom:'会員様動画'},
-      {name:'よみかきそろばん', url:'#', dom:'整備中'},
+      {name:'よみかきそろばん', url:'https://api01-platform.stream.co.jp/apiservice/plt3/NTczNA%3d%3d%23ODcw%23280%23168%230%2335E6A0D8A400%23MDoyOjc6YTpmOzEwOzEwOzEw%23/1', dom:'会員様動画'},
     ]},
   { id:'10', name:'ロープレ', icon:'💬', links:[
       {name:'積み木', url:'https://drive.google.com/drive/folders/12zS2aVhyykgoFBYbluW5HEenwm2ehxhn?usp=share_link', dom:'drive.google.com'},
       {name:'媒体指差し', url:'https://drive.google.com/drive/folders/12zS2aVhyykgoFBYbluW5HEenwm2ehxhn?usp=share_link', dom:'drive.google.com'},
       {name:'BOX', url:'https://drive.google.com/drive/folders/1MMZAuF3IEsrNS1DSYVxtaX6YP1ovNSuI?usp=drive_link', dom:'google.drive'},
-      {name:'FASIL', url:'#', dom:'整備中'},
+      {name:'FASIL', url:'https://drive.google.com/drive/folders/1l0opM5d9MnV7rrdchHcuL3ucm0RAqxT5?usp=drive_link', dom:'drive.google.com'},
       {name:'発表会', url:'https://drive.google.com/drive/folders/1OFzD5G3wentHIv08IEqJAWr11m-pCm9e?usp=drive_link', dom:'drive.google.com'},
     ]},
   // ── AI ──
@@ -906,6 +904,8 @@ const ICONS = {
   book:'<path d="M3 5c3-1.3 6-1.3 9 .6V20c-3-1.9-6-1.9-9-.6zM21 5c-3-1.3-6-1.3-9 .6V20c3-1.9 6-1.9 9-.6z"/>',
   list:'<rect x="4" y="3" width="16" height="18" rx="2"/><path d="M8 8h8M8 12h8M8 16h5"/>',
   search:'<circle cx="11" cy="11" r="6"/><path d="m20 20-4-4"/>',
+  help:'<circle cx="12" cy="12" r="9"/><path d="M9.5 9.5a2.5 2.5 0 1 1 3.5 2.3c-.6.3-1 .8-1 1.5v.7M12 17h.01"/>',
+  chat:'<path d="M4 5h16v11H9l-5 4z"/><path d="M8 9h8M8 12h5"/>',
 };
 const iconSvg = (name, color) => `<svg viewBox="0 0 24 24" class="ic" style="color:${color||'var(--blue)'}">${ICONS[name] || ICONS.link}</svg>`;
 
@@ -1225,13 +1225,10 @@ function renderTicker(){
     return;
   }
   tr.innerHTML = items.map(m => `<span>${esc(m.text)}</span>`).join('');
-  requestAnimationFrame(() => {
-    const w = tr.scrollWidth, bw = box.clientWidth;
-    tr.style.setProperty('--from', bw + 'px'); tr.style.setProperty('--to', -w + 'px');
-    tr.style.animationDuration = ((w + bw) / TICKER_SPEED) + 's';
-  });
+  // 流れる時間は文字数から決める（画面の幅を測らないので、どのタイミングでも必ず流れます）
+  const chars = items.reduce((n, m) => n + m.text.length + 6, 0);
+  tr.style.animationDuration = Math.max(10, chars * 14 * 60 / TICKER_SPEED / 60 + 6) + 's';
 }
-let tkr; addEventListener('resize', () => { clearTimeout(tkr); tkr = setTimeout(renderTicker, 300); });
 
 /* ───────── 全体検索 ───────── */
 function searchIndex(){
@@ -1344,7 +1341,9 @@ const Chara = (() => {
   // キャラクターをクリックすると、紹介画像を順番に表示
   img.title = 'ディルチャ（クリックで紹介を見る）';
   img.addEventListener('click', e => { e.stopPropagation(); showProfile(); });
-  Object.values(CHARA_SPRITES).forEach(s => { const i = new Image(); i.src = s.src; });   // 先に読み込んでおく
+  let loaded = false;   // キャラクター画像は、キャラクターモードにしたときだけ読み込む
+  const preload = () => { if(loaded) return; loaded = true; Object.values(CHARA_SPRITES).forEach(s => { const i = new Image(); i.src = s.src; }); };
+  if(on) preload();
 
   let x = 0, y = 0, pose = 'stand', where = null;   // where：'panel'（下の欄のふち）/ 'btn'（ボタンのふち）
   let timer = null, raf = null, frameT = null, token = 0, moving = false, sleeping = false, visible = false;
@@ -1573,7 +1572,7 @@ const Chara = (() => {
     start(){ timer = setTimeout(step, 1500); },
     refresh(){ stopAll(); show(false); where = null; timer = setTimeout(step, 1200); },
     isOn: () => on,
-    setOn(v){ on = v; store.set(KEY, v); stopAll(); show(false); where = null; if(v) timer = setTimeout(step, 300); },
+    setOn(v){ on = v; store.set(KEY, v); if(v) preload(); stopAll(); show(false); where = null; if(v) timer = setTimeout(step, 300); },
     celebrate(){
       if(!visible || moving || sleeping || reduce) return;
       stopAll(); idle(where === 'panel' ? 'flip' : 'cheer'); nextIn(6, 10);
