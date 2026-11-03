@@ -1,0 +1,9 @@
+// Cloudflare の公開設定（このフォルダの中身を、そのままサイトとして公開します）
+{
+  "name": "mishima-portal",
+  "compatibility_date": "2026-11-01",
+  "assets": {
+    "directory": "./",
+    "not_found_handling": "single-page-application"
+  }
+}
